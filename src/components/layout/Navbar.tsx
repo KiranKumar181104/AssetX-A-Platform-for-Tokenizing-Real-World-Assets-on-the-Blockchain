@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Wallet, User } from "lucide-react";
+import { Menu, X, Wallet, User, LogOut } from "lucide-react";
+import { useWallet } from "@/hooks/useWallet";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { account, isConnecting, isConnected, connectWallet, disconnectWallet, formatAddress } = useWallet();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -46,14 +48,28 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              <Wallet className="w-4 h-4 mr-2" />
-              Connect Wallet
-            </Button>
-            <Button size="sm">
-              <User className="w-4 h-4 mr-2" />
-              Sign In
-            </Button>
+            {isConnected ? (
+              <div className="flex items-center space-x-2">
+                <Button variant="outline" size="sm" onClick={disconnectWallet}>
+                  <Wallet className="w-4 h-4 mr-2" />
+                  {formatAddress(account!)}
+                </Button>
+                <Button variant="outline" size="sm" onClick={disconnectWallet}>
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <Button variant="outline" size="sm" onClick={connectWallet} disabled={isConnecting}>
+                <Wallet className="w-4 h-4 mr-2" />
+                {isConnecting ? "Connecting..." : "Connect Wallet"}
+              </Button>
+            )}
+            <Link to="/signin">
+              <Button size="sm">
+                <User className="w-4 h-4 mr-2" />
+                Sign In
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -84,14 +100,29 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="pt-4 space-y-2">
-              <Button variant="outline" size="sm" className="w-full">
-                <Wallet className="w-4 h-4 mr-2" />
-                Connect Wallet
-              </Button>
-              <Button size="sm" className="w-full">
-                <User className="w-4 h-4 mr-2" />
-                Sign In
-              </Button>
+              {isConnected ? (
+                <div className="space-y-2">
+                  <Button variant="outline" size="sm" className="w-full" onClick={disconnectWallet}>
+                    <Wallet className="w-4 h-4 mr-2" />
+                    {formatAddress(account!)}
+                  </Button>
+                  <Button variant="outline" size="sm" className="w-full" onClick={disconnectWallet}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Disconnect
+                  </Button>
+                </div>
+              ) : (
+                <Button variant="outline" size="sm" className="w-full" onClick={connectWallet} disabled={isConnecting}>
+                  <Wallet className="w-4 h-4 mr-2" />
+                  {isConnecting ? "Connecting..." : "Connect Wallet"}
+                </Button>
+              )}
+              <Link to="/signin">
+                <Button size="sm" className="w-full">
+                  <User className="w-4 h-4 mr-2" />
+                  Sign In
+                </Button>
+              </Link>
             </div>
           </div>
         )}

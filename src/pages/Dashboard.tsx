@@ -12,8 +12,12 @@ import {
   Users,
   DollarSign
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const stats = [
     { label: "Total Portfolio Value", value: "$2,450,000", change: "+12.5%", icon: DollarSign },
     { label: "Active Assets", value: "24", change: "+3", icon: Building },
@@ -71,6 +75,32 @@ const Dashboard = () => {
     }
   };
 
+  const handleTokenizeAsset = () => {
+    toast({
+      title: "Tokenize Asset",
+      description: "Redirecting to asset tokenization form...",
+    });
+    navigate("/marketplace");
+  };
+
+  const handleViewAnalytics = () => {
+    navigate("/analytics");
+  };
+
+  const handleListNewAsset = () => {
+    toast({
+      title: "List New Asset",
+      description: "Asset listing feature coming soon!",
+    });
+  };
+
+  const handleManageInvestors = () => {
+    toast({
+      title: "Manage Investors",
+      description: "Investor management dashboard coming soon!",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -80,7 +110,7 @@ const Dashboard = () => {
             <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
             <p className="text-muted-foreground">Manage your tokenized assets</p>
           </div>
-          <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90">
+          <Button className="bg-gradient-to-r from-primary to-accent hover:opacity-90" onClick={handleTokenizeAsset}>
             <Plus className="w-4 h-4 mr-2" />
             Tokenize Asset
           </Button>
@@ -155,15 +185,15 @@ const Dashboard = () => {
                 <CardTitle className="text-foreground">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={handleListNewAsset}>
                   <Building className="w-4 h-4 mr-2" />
                   List New Asset
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={handleViewAnalytics}>
                   <TrendingUp className="w-4 h-4 mr-2" />
                   View Analytics
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={handleManageInvestors}>
                   <Users className="w-4 h-4 mr-2" />
                   Manage Investors
                 </Button>
