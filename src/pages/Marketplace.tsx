@@ -15,10 +15,14 @@ import {
   Calendar,
   Users
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const assets = [
     {
@@ -134,6 +138,20 @@ const Marketplace = () => {
     const matchesCategory = selectedCategory === "all" || asset.type.toLowerCase().replace(" ", "-") === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleViewDetails = (assetId: number) => {
+    toast({
+      title: "Asset Details",
+      description: "Detailed asset information coming soon!",
+    });
+  };
+
+  const handleInvestNow = (assetId: number) => {
+    toast({
+      title: "Investment Process",
+      description: "Investment feature coming soon!",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -251,11 +269,11 @@ const Marketplace = () => {
                   </div>
 
                   <div className="flex space-x-2 pt-2">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button variant="outline" size="sm" className="flex-1" onClick={() => handleViewDetails(asset.id)}>
                       <TrendingUp className="w-4 h-4 mr-2" />
                       View Details
                     </Button>
-                    <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-accent hover:opacity-90">
+                    <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-accent hover:opacity-90" onClick={() => handleInvestNow(asset.id)}>
                       Invest Now
                     </Button>
                   </div>

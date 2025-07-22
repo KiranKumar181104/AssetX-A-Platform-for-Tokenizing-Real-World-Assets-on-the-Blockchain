@@ -18,9 +18,11 @@ import {
   ArrowUpRight,
   ArrowDownRight
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { toast } = useToast();
 
   const portfolioStats = {
     totalValue: 2450000,
@@ -167,6 +169,20 @@ const Portfolio = () => {
     }
   };
 
+  const handleExportReport = () => {
+    toast({
+      title: "Export Report",
+      description: "Portfolio report export feature coming soon!",
+    });
+  };
+
+  const handleViewDetails = (holdingId: number) => {
+    toast({
+      title: "Asset Details",
+      description: "Detailed asset information coming soon!",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -176,7 +192,7 @@ const Portfolio = () => {
             <h1 className="text-3xl font-bold text-foreground">Portfolio</h1>
             <p className="text-muted-foreground">Track your tokenized asset investments</p>
           </div>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleExportReport}>
             <Download className="w-4 h-4 mr-2" />
             Export Report
           </Button>
@@ -260,7 +276,7 @@ const Portfolio = () => {
                             <p className="text-sm text-muted-foreground">{holding.type}</p>
                           </div>
                         </div>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={() => handleViewDetails(holding.id)}>
                           <Eye className="w-4 h-4 mr-2" />
                           View Details
                         </Button>
